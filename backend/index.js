@@ -5,6 +5,9 @@ import veterinarianRoutes from "./routes/veterinarianRoutes.js";
 
 //Call to execute express
 const app = express();
+
+//Tell it that we are going to post (send) data throught JSON form
+app.use(express.json());
 //Dotenv must be before conectDB
 dotenv.config();
 //process.env => es la manera como node oculta las variables, se ponen en el archivo .env y se ocultan en el gitignore

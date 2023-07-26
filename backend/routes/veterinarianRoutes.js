@@ -5,7 +5,7 @@ const router = express.Router();
 
 //El callback (req,=> lo que se manda, res => la respuesta) se manda llamar automaticamente al llamar la ruta
 
-router.get("/", register);
+router.post("/", register);
 
 router.get("/perfil", perfil);
 
