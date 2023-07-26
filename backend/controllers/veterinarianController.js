@@ -2,6 +2,17 @@ import Veterinarian from "../models/Veterinarian.js";
 
 //Register a user
 const register = async (req, res) => {
+  //Applying destructuring to email and password
+  const { name, email, password } = req.body;
+  const userEmailExist = await Veterinarian.findOne({ email: email });
+
+  if (userEmailExist) {
+    //Create a new instance of an error to send everytime an error exist
+    const error = new Error("Email duplicado");
+    //Stop the execution and send the error message in the DB response
+    return res.status(400).json({ msg: error.message });
+  }
+
   try {
     //Register a new veterinarian
     //Creating a new instance of Veterinarian that is going to have all that schema
@@ -15,8 +26,6 @@ const register = async (req, res) => {
   //Rest.send envia la info dentro de ( ) al navegador
   //Request lo que se envia al servidor
   console.log(req.body);
-  //Applying destructuring to email and password
-  // const { name, email, password } = req.body;
 };
 
 //
