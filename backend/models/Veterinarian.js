@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import idGenerator from "../helpers/idGenerator.js";
 
 //Define the schema (structure that the db is going to have) ot the DB
 const veterinarianSchema = mongoose.Schema({
@@ -28,6 +29,7 @@ const veterinarianSchema = mongoose.Schema({
   },
   token: {
     type: String,
+    default: idGenerator(),
   },
   confirmed: {
     type: Boolean,
