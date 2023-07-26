@@ -3,6 +3,7 @@ import Veterinarian from "../models/Veterinarian.js";
 //Register a user
 const register = async (req, res) => {
   //Applying destructuring to email and password
+  //Para llenar formulario req.body
   const { name, email, password } = req.body;
   const userEmailExist = await Veterinarian.findOne({ email: email });
 
@@ -25,11 +26,22 @@ const register = async (req, res) => {
   }
   //Rest.send envia la info dentro de ( ) al navegador
   //Request lo que se envia al servidor
-  console.log(req.body);
 };
 
 //
 const perfil = (req, res) => {
-  res.json({ msg: "Mostrando perfil" });
+  res.send({ msg: "Mostrando perfil" });
 };
-export { register, perfil };
+
+const readToken = async (req, res) => {
+  //para leer datos req.params
+  //luego añadir el parametro dinamico que se añadio en el routing, en este caso es token
+  console.log(req.params.token);
+
+  //   const { token } = req.body;
+  //   const tokenExist = await Veterinarian.findOne({ token });
+
+  res.send({ msg: "Mostrando perfil" });
+};
+
+export { register, perfil, readToken };
