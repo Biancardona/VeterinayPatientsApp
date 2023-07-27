@@ -33,15 +33,31 @@ const perfil = (req, res) => {
   res.send({ msg: "Mostrando perfil" });
 };
 
+//When user creates their account, an email with the token number would be send to the user so they can confirm their account
 const readToken = async (req, res) => {
   //para leer datos req.params
   //luego añadir el parametro dinamico que se añadio en el routing, en este caso es token
-  console.log(req.params.token);
+  // console.log(req.params.token);
 
-  //   const { token } = req.body;
-  //   const tokenExist = await Veterinarian.findOne({ token });
+  const { token } = req.params;
+  const tokenExist = await Veterinarian.findOne({ token });
+  console.log(tokenExist);
 
-  res.send({ msg: "Mostrando perfil" });
+  if (!tokenExist) {
+    const error = new Error("usuario no existe");
+    return res.status(404).json({ msg: error.message });
+  }
+
+  try {
+    //If token exist, then user is confirm, in tokenExist instance change token to null, and confirmado to true.
+    //Then save the instance ot tokenExist
+    tokenExist.token = null;
+    tokenExist.confirmed = true;
+    await tokenExist.save();
+    res.json({ msg: "Usuario confirmado correctamente" });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export { register, perfil, readToken };
