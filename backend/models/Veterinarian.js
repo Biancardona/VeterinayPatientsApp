@@ -52,6 +52,11 @@ veterinarianSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, saltRounds);
 });
 
+//New method to check if the writed password is equal to de one in the db
+veterinarianSchema.methods.comparedPasswords = async function (passwordForm) {
+  return await bcrypt.compare(passwordForm, this.password);
+};
+
 //Register as a model that has to interact with the DB, as a second argument is the schema that is telling how needs to be the schema in the db
 const Veterinarian = mongoose.model("Veterinarian", veterinarianSchema);
 

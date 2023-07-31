@@ -60,4 +60,28 @@ const readToken = async (req, res) => {
   }
 };
 
-export { register, perfil, readToken };
+const auth = async (req, res) => {
+  console.log(req.body);
+  //
+  const { email, password } = req.body;
+  const emailExist = await Veterinarian.findOne({ email });
+
+  if (!emailExist) {
+    const error = new Error("correo no existe");
+    return res.status(403).json({ msg: error.message });
+  }
+  //check if the email is confirmed
+  if (!emailExist.confirmed) {
+    const error = new Error("correo no autenticado");
+    return res.status(403).json({ msg: error.message });
+  }
+  //authentication of the user
+  if (emailExist.comparedPasswords(password)) {
+    console.log("usuario autenticado");
+  } else {
+    const error = new Error("password no coincide ");
+    return res.status(403).json({ msg: error.message });
+  }
+};
+
+export { register, perfil, readToken, auth };

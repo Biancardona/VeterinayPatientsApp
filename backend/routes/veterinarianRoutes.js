@@ -3,6 +3,7 @@ import {
   register,
   perfil,
   readToken,
+  auth,
 } from "../controllers/veterinarianController.js";
 
 const router = express.Router();
@@ -16,5 +17,7 @@ router.post("/", register);
 router.get("/readToken/:token", readToken);
 
 router.get("/perfil", perfil);
+
+router.post("/login", auth);
 
 export default router;
