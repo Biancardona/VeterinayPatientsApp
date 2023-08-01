@@ -1,4 +1,5 @@
 import Veterinarian from "../models/Veterinarian.js";
+import generateJWT from "../helpers/generateJWT.js";
 
 //Register a user
 const register = async (req, res) => {
@@ -75,9 +76,11 @@ const auth = async (req, res) => {
     const error = new Error("correo no autenticado");
     return res.status(403).json({ msg: error.message });
   }
-  //authentication of the user
+  //authentication of the password.Using the function that is in the schema to compare passwords
   if (emailExist.comparedPasswords(password)) {
-    console.log("usuario autenticado");
+    //authentication of the user(using the function generateJWT); passing the user id in order to generate
+    //the token with the user id
+    res.json({ token: generateJWT(emailExist.id) });
   } else {
     const error = new Error("password no coincide ");
     return res.status(403).json({ msg: error.message });
