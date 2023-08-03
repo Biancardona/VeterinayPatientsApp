@@ -1,5 +1,6 @@
 import Veterinarian from "../models/Veterinarian.js";
 import generateJWT from "../helpers/generateJWT.js";
+import idGenerator from "../helpers/idGenerator.js";
 
 //Register a user
 const register = async (req, res) => {
@@ -31,7 +32,9 @@ const register = async (req, res) => {
 
 //
 const perfil = (req, res) => {
-  res.send({ msg: "Mostrando perfil" });
+  //req.veterinario esta almacenado en el authMiddleware(info almacenada en la sesion del servidor)
+  const { veterinarian } = req;
+  res.json({ perfil: veterinarian });
 };
 
 //When user creates their account, an email with the token number would be send to the user so they can confirm their account
@@ -87,4 +90,58 @@ const auth = async (req, res) => {
   }
 };
 
-export { register, perfil, readToken, auth };
+//In case the email exist
+//1.- Generate a token
+//2.- Send through mail
+//3.- When the user open the link, we are going to search in the db if the token exists
+//4.- Allow to the user generate new password
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  const emailExist = await Veterinarian.findOne({ email });
+
+  if (!emailExist) {
+    const error = new Error("correo no existe");
+    return res.status(403).json({ msg: error.message });
+  }
+  try {
+    //generate ID
+    emailExist.token = idGenerator();
+    //save it in the DB
+    await emailExist.save();
+    //res.json send a message
+    res.json({ msg: "Token generado correctamente" });
+  } catch (error) {}
+};
+
+const authToken = async (req, res) => {
+  //Because is info from de url
+  //Because the route have a dynamic param (/:token), the way to access that info is request.params
+  const { token } = req.params;
+
+  const tokenExist = await Veterinarian.findOne({ token });
+  console.log(tokenExist);
+  if (tokenExist) {
+    res.json({ msg: "Token  valido" });
+  } else {
+    const error = new Error("Token no valido");
+    return res.status(404).json({ msg: error.message });
+  }
+};
+
+const newPassword = (req, res) => {
+  //Read the token to continue validating it
+  //Read the password (req.body => read the info that the user writes in the inputs)
+  //If is a valid token use a try catch because db its going to be modified (POST) bc a new password its going to be added
+  //Delete the token (null)
+  //Re asign the password and save it
+};
+
+export {
+  register,
+  perfil,
+  readToken,
+  auth,
+  forgotPassword,
+  authToken,
+  newPassword,
+};
