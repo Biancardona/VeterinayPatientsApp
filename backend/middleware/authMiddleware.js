@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import Veterinarian from "../models/Veterinarian.js";
 
 const authMiddleware = async (req, res, next) => {
-  //Identify who is the user that is authenticated to show them their perfil
+  //Identify who is the user that is authenticated to show his perfil
   let token;
   if (
     req.headers.authorization &&

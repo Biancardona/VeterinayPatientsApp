@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import conectDB from "./config/db.js";
 import veterinarianRoutes from "./routes/veterinarianRoutes.js";
+import patientsRoutes from "./routes/patientsRoutes.js";
 
 //Call to execute express
 const app = express();
@@ -17,6 +18,7 @@ conectDB();
 
 //Cuando se escriba la url api/veteri... se va a mandar llamar la ruta veterinarianRoutes que esta importada de routes
 app.use("/api/veterinarians", veterinarianRoutes);
+app.use("/api/patients", patientsRoutes);
 //Defining PORT
 const port = process.env.PORT || 4000;
 
