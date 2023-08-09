@@ -4,6 +4,8 @@ import {
   addPatients,
   getPatients,
   getSinglePatient,
+  updatePatient,
+  deletePatient,
 } from "../controllers/patientsController.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 
@@ -16,6 +18,10 @@ router
   .post(authMiddleware, addPatients)
   .get(authMiddleware, getPatients);
 
-router.route("/:id").get(authMiddleware, getSinglePatient);
+router
+  .route("/:id")
+  .get(authMiddleware, getSinglePatient)
+  .put(authMiddleware, updatePatient)
+  .delete(authMiddleware, deletePatient);
 
 export default router;
