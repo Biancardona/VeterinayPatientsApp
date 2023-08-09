@@ -1,6 +1,10 @@
 import express from "express";
 const router = express.Router();
-import { addPatients, getPatients } from "../controllers/patientsController.js";
+import {
+  addPatients,
+  getPatients,
+  getSinglePatient,
+} from "../controllers/patientsController.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 
 router
@@ -10,6 +14,8 @@ router
   //For that reason qe need to add a middleware in postPAtient to protect that route
 
   .post(authMiddleware, addPatients)
-  .get(getPatients);
+  .get(authMiddleware, getPatients);
+
+router.route("/:id").get(authMiddleware, getSinglePatient);
 
 export default router;

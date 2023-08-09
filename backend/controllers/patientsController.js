@@ -9,7 +9,6 @@ const addPatients = async (req, res) => {
   //req.veterinarian es donde se alamcena los datos del authMiddleware
   patient.veterinario = req.veterinarian._id;
 
-  const { name, propietario, email, sintomas } = req.body;
   try {
     //saving the object of patients
     const patientObject = await patient.save();
@@ -19,6 +18,30 @@ const addPatients = async (req, res) => {
   }
 };
 
-const getPatients = (req, res) => {};
+const getPatients = async (req, res) => {
+  //filter the patients of the veterinarian that has been logged
+  const patients = await Patients.find()
+    .where("veterinario")
+    .equals(req.veterinarian);
+  res.json(patients);
+};
 
-export { addPatients, getPatients };
+const getSinglePatient = async (req, res) => {
+  //Bring patient instance
+
+  const { id } = req.params;
+  const patientsById = await Patients.findById(id);
+  //authentication if the veterinarian add the patient
+  //compare the id in patient and in veterinarian db
+  //When in mongo DB the objectID are being compare, they need to be converted
+  //to strings
+  if (
+    patientsById.veterinario._id.toString() !== req.veterinarian._id.toString()
+  ) {
+    return res.json({ msg: "Paciente no valido" });
+  } else {
+    res.json(patientsById);
+  }
+};
+
+export { addPatients, getPatients, getSinglePatient };
