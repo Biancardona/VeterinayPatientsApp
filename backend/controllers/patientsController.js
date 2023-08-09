@@ -80,7 +80,29 @@ const updatePatient = async (req, res) => {
     console.log(error);
   }
 };
-const deletePatient = async (req, res) => {};
+const deletePatient = async (req, res) => {
+  const { id } = req.params;
+
+  const patientsById = await Patients.findById(id);
+  if (!patientsById) {
+    const error = new Error("usuario no existe");
+    res.status(404).json({ msg: error.message });
+  }
+  if (
+    patientsById.veterinario._id.toString() !== req.veterinarian._id.toString()
+  ) {
+    return res.json({ msg: "Paciente no valido" });
+  }
+  //DELETE A PATIENT
+  //Using mongoose method
+
+  try {
+    await patientsById.deleteOne();
+    return res.json({ msg: "Paciente eliminado" });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export {
   addPatients,
