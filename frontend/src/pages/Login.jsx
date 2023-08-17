@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 const Login = () => {
   return (
     <>
@@ -34,6 +36,20 @@ const Login = () => {
               className="border w-full p-3 mt-5 my-5 px-10 bg-indigo-600 text-white uppercase rounded-xl font-bold hover:cursor-pointer hover:bg-indigo-900"
             />
           </div>
+          <nav className="mt-5 lg:flex lg:justify-between">
+            <NavLink
+              to="/register"
+              className="block text-gray-400 text-center my-5"
+            >
+              Aun no tienes cuenta? Registrate
+            </NavLink>
+            <NavLink
+              to="/forgot-password"
+              className="block text-gray-400 text-center my-5"
+            >
+              Olvide mi contraseña
+            </NavLink>
+          </nav>
         </form>
       </div>
     </>

@@ -7,6 +7,7 @@ import Register from "./pages/Register";
 //Browser router es el wraper
 //Router agrupa diferentes rutas
 //Route para una ruta especifica
+//Login is the main page that is going to use the / route
 function App() {
   return (
     <BrowserRouter>
