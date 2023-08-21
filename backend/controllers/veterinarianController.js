@@ -5,8 +5,8 @@ import idGenerator from "../helpers/idGenerator.js";
 //Register a user
 const register = async (req, res) => {
   //Applying destructuring to email and password
-  //Para llenar formulario req.body
-  const { name, email, password } = req.body;
+  //Para leer del inputo la info del formulario req.body
+  const { email } = req.body;
   const userEmailExist = await Veterinarian.findOne({ email: email });
 
   if (userEmailExist) {
@@ -114,7 +114,7 @@ const forgotPassword = async (req, res) => {
 };
 
 const authToken = async (req, res) => {
-  //Because is info from de url
+  //Because is info from de url (req.params)
   //Because the route have a dynamic param (/:token), the way to access that info is request.params
   const { token } = req.params;
 
@@ -128,12 +128,30 @@ const authToken = async (req, res) => {
   }
 };
 
-const newPassword = (req, res) => {
-  //Read the token to continue validating it
+const newPassword = async (req, res) => {
+  //Read the token to continue validating it (info from the url req.params)
+  const { token } = req.params;
+  const veterinarian = await Veterinarian.findOne({ token });
+  console.log(veterinarian);
   //Read the password (req.body => read the info that the user writes in the inputs)
+  const { password } = req.body;
+
+  if (!veterinarian) {
+    const error = new Error("usuario no existe");
+    return res.status(404).json({ msg: error.message });
+  }
+
   //If is a valid token use a try catch because db its going to be modified (POST) bc a new password its going to be added
-  //Delete the token (null)
-  //Re asign the password and save it
+  try {
+    //Delete the token (null)
+    //Re asign the password and save it
+    veterinarian.token = null;
+    veterinarian.password = password;
+    await veterinarian.save();
+    res.json({ msg: "Contraseña añadida correctamente" });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export {

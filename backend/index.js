@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 import conectDB from "./config/db.js";
 import veterinarianRoutes from "./routes/veterinarianRoutes.js";
 import patientsRoutes from "./routes/patientsRoutes.js";
@@ -16,6 +17,20 @@ dotenv.config();
 //Call the function that connect to DB
 conectDB();
 
+//Allow cors using F.E. URL
+const allowedDomains = ["http://localhost:5173"];
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (allowedDomains.indexOf(origin) !== -1) {
+      //Request oorigin is allowed
+      callback(null, true);
+    } else {
+      callback(new Error("No permitido por CORS"));
+    }
+  },
+};
+//Allow express use CorsOptions
+app.use(cors(corsOptions));
 //Cuando se escriba la url api/veteri... se va a mandar llamar la ruta veterinarianRoutes que esta importada de routes
 app.use("/api/veterinarians", veterinarianRoutes);
 app.use("/api/patients", patientsRoutes);
