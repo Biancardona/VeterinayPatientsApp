@@ -10,34 +10,36 @@ const ForgotPassword = () => {
         </h1>
       </div>
       <div>
-        <form>
-          <div className="my-5">
-            <label className="uppercase text-gray-600 block text-xl font-bold">
-              Email
-            </label>
+        <div className="mt 20 md:mt-5 shadow-lg px-5 py-10 rounded-xl bg-white">
+          <form>
+            <div className="my-5">
+              <label className="uppercase text-gray-600 block text-xl font-bold">
+                Email
+              </label>
+              <input
+                type="email"
+                placeholder="Email de Registro"
+                className="border w-full p-3 mt-3 bg-gray-50 rounded-xl"
+              />
+            </div>
             <input
-              type="email"
-              placeholder="Email de Registro"
-              className="border w-full p-3 mt-3 bg-gray-50 rounded-xl"
+              type="submit"
+              value="Enviar Instrucciones"
+              className="border w-full py-3 mt-5 my-5 px-10 bg-indigo-600 text-white uppercase rounded-xl font-bold hover:cursor-pointer hover:bg-indigo-900"
             />
-          </div>
-          <input
-            type="submit"
-            value="Enviar Instrucciones"
-            className="border w-full py-3 mt-5 my-5 px-10 bg-indigo-600 text-white uppercase rounded-xl font-bold hover:cursor-pointer hover:bg-indigo-900"
-          />
-          <nav className="mt-5 lg:flex lg:justify-between">
-            <NavLink to="/" className="block text-gray-400 text-center my-5">
-              Ya tienes cuenta? Inicia Sesion
-            </NavLink>
-            <NavLink
-              to="/register"
-              className="block text-gray-400 text-center my-5"
-            >
-              Aun no tienes cuenta? Registrate
-            </NavLink>
-          </nav>
-        </form>
+            <nav className="mt-5 lg:flex lg:justify-between">
+              <NavLink to="/" className="block text-gray-400 text-center my-5">
+                Ya tienes cuenta? Inicia Sesion
+              </NavLink>
+              <NavLink
+                to="/register"
+                className="block text-gray-400 text-center my-5"
+              >
+                Aun no tienes cuenta? Registrate
+              </NavLink>
+            </nav>
+          </form>
+        </div>
       </div>
     </>
   );

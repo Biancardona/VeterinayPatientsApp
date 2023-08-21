@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import Alert from "../components/Alert";
+import axios from "axios";
 
 const Register = () => {
   //value, and the function that modify the state
@@ -11,7 +12,7 @@ const Register = () => {
   const [confirmPassword, setconfirmPassword] = useState("");
   const [alerta, setAlerta] = useState({});
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if ([name, email, telephone, password, confirmPassword].includes("")) {
       setAlerta({ msg: "Campo vacio intenta de nuevo", error: true });
@@ -33,9 +34,32 @@ const Register = () => {
     }
     //Objecto vacio para el caso que todos los campos esten ingresados correctamente, para que ya no se muestre la alerta
     setAlerta({});
+    //Creating user in the API
+
+    try {
+      //variable url
+      const url = "http://localhost:4000/api/veterinarians";
+      //variable que contenga la peticion axios, recibe, la url y los datos por medio de un objeto
+      await axios.post(url, { name, email, telephone, password });
+      setAlerta({
+        msg: "Usuario creado correctamente, reivsa tu email para confirmar cuenta",
+        error: false,
+      });
+      setName("");
+      setEmail("");
+      setPassword("");
+      setTelephone("");
+      setconfirmPassword("");
+    } catch (error) {
+      setAlerta({
+        //msg esta definido en el componmente de alerta y aqui ya se le pasa loq eu va a mostrar
+        msg: error.response.data.msg,
+        error: true,
+      });
+    }
   };
   //Para que no se aplique las clases de la alerta, extraer de alerta el mensaje(crear variable para antes de mopstrarlo en el componente)
-  // si la variable msg es verdadera, entonces se renderizará el componente Alerta con el valor de la propiedad alerta igual a la variable alerta.
+  //Si la variable msg es verdadera, entonces se renderizará el componente Alerta con el valor de la propiedad alerta igual a la variable alerta.
   //Si la variable msg es falsa, entonces no se renderizará nada.
   const { msg } = alerta;
 
