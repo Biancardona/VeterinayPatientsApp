@@ -1,12 +1,13 @@
 import Veterinarian from "../models/Veterinarian.js";
 import generateJWT from "../helpers/generateJWT.js";
 import idGenerator from "../helpers/idGenerator.js";
+import emailRegister from "../helpers/emailRegister.js";
 
 //Register a user
 const register = async (req, res) => {
   //Applying destructuring to email and password
   //Para leer del inputo la info del formulario req.body
-  const { email } = req.body;
+  const { name, email } = req.body;
   const userEmailExist = await Veterinarian.findOne({ email: email });
 
   if (userEmailExist) {
@@ -22,6 +23,13 @@ const register = async (req, res) => {
     const veterinarian = new Veterinarian(req.body);
     //Create another instance or object using save()method.
     const veterinarianObject = await veterinarian.save();
+    //Send email Register; passing name, email, and token
+
+    emailRegister({
+      name,
+      email,
+      token: veterinarianObject.token,
+    });
     res.json(veterinarianObject);
   } catch (error) {
     console.log(error);
