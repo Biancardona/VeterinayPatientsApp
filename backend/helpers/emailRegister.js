@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import "dotenv/config";
 
 const emailRegister = async (data) => {
   var transport = nodemailer.createTransport({

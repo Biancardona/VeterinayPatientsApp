@@ -56,7 +56,7 @@ const readToken = async (req, res) => {
   console.log(tokenExist);
 
   if (!tokenExist) {
-    const error = new Error("usuario no existe");
+    const error = new Error("Token no valido");
     return res.status(404).json({ msg: error.message });
   }
 
@@ -145,7 +145,7 @@ const newPassword = async (req, res) => {
   const { password } = req.body;
 
   if (!veterinarian) {
-    const error = new Error("usuario no existe");
+    const error = new Error("usuario no existee");
     return res.status(404).json({ msg: error.message });
   }
 
