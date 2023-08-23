@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+
+import axiosClient from "../config/axios";
 import Alert from "../components/Alert";
 import { NavLink } from "react-router-dom";
 
@@ -17,9 +18,9 @@ const AccountConfirm = () => {
   useEffect(() => {
     const confirmAccoutn = async () => {
       try {
-        const url = `http://localhost:4000/api/veterinarians/readToken/${id}`;
+        const url = `/veterinarians/readToken/${id}`;
         //data is the Axios response
-        const { data } = await axios(url);
+        const { data } = await axiosClient(url);
         setconfimedAccount(true);
         setAlerta({
           msg: data.msg,

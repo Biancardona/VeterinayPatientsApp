@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import Alert from "../components/Alert";
-import axios from "axios";
+import axiosClient from "../config/axios";
 
 const Register = () => {
   //value, and the function that modify the state
@@ -37,10 +37,13 @@ const Register = () => {
     //Creating user in the API
 
     try {
-      //variable url
-      const url = "http://localhost:4000/api/veterinarians";
       //variable que contenga la peticion axios, recibe, la url y los datos por medio de un objeto
-      await axios.post(url, { name, email, telephone, password });
+      await axiosClient.post("/veterinarians", {
+        name,
+        email,
+        telephone,
+        password,
+      });
       setAlerta({
         msg: "Usuario creado correctamente, reivsa tu email para confirmar cuenta",
         error: false,
