@@ -2,6 +2,7 @@ import Veterinarian from "../models/Veterinarian.js";
 import generateJWT from "../helpers/generateJWT.js";
 import idGenerator from "../helpers/idGenerator.js";
 import emailRegister from "../helpers/emailRegister.js";
+import emailForgotPassword from "../helpers/forgotPassword.js";
 
 //Register a user
 const register = async (req, res) => {
@@ -104,7 +105,7 @@ const auth = async (req, res) => {
 //3.- When the user open the link, we are going to search in the db if the token exists
 //4.- Allow to the user generate new password
 const forgotPassword = async (req, res) => {
-  const { email } = req.body;
+  const { email, name } = req.body;
   const emailExist = await Veterinarian.findOne({ email });
 
   if (!emailExist) {
@@ -116,6 +117,13 @@ const forgotPassword = async (req, res) => {
     emailExist.token = idGenerator();
     //save it in the DB
     await emailExist.save();
+
+    //Send email with instructions (MAILTRAP)
+    emailForgotPassword({
+      name: emailExist.name,
+      email,
+      token: emailExist.token,
+    });
     //res.json send a message
     res.json({ msg: "Token generado correctamente" });
   } catch (error) {}
