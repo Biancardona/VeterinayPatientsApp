@@ -10,6 +10,7 @@ const NewPassword = () => {
   const [password, setPassword] = useState("");
   const [confirmedToken, setconfirmedToken] = useState(false);
   const [alerta, setAlerta] = useState({});
+  const [confirmPassword, setconfirmPassword] = useState(false);
   //Destructuring token from params(token is te way its called in the routes)
   const { token } = params;
   //Hook useEffect to be executed once the componente is loaded
@@ -19,8 +20,33 @@ const NewPassword = () => {
       setAlerta({ msg: "Campo Obligatorio", error: true });
       return;
     }
+    if (password.length <= 6) {
+      setAlerta({
+        msg: "Password muy corto, agrega minimo 6 caracteres",
+        error: true,
+      });
+      return;
+    }
     setAlerta({});
+
+    try {
+      const { data } = await axiosClient.post(
+        `/veterinarians/forgotPassword/${token}`,
+        {
+          password,
+        }
+      );
+      setconfirmPassword(true);
+      setAlerta({
+        msg: data.msg,
+        error: false,
+      });
+      setPassword("");
+    } catch (error) {
+      setAlerta({ msg: error.response.data.msg, error: true });
+    }
   };
+
   //Hook useEffect is going to be executed once the component is load
   useEffect(() => {
     const cofirmPassword = async () => {
@@ -76,11 +102,11 @@ const NewPassword = () => {
               value="Reestablecer Password"
               className="border w-full py-3 mt-5 my-5 px-10 bg-indigo-600 text-white uppercase rounded-xl font-bold hover:cursor-pointer hover:bg-indigo-900"
             />
-            <nav className="mt-10 lg:flex lg:justify-between">
+            {confirmPassword && (
               <NavLink to="/" className="block text-gray-400 text-center my-5">
                 Inicia Sesion
-              </NavLink>{" "}
-            </nav>
+              </NavLink>
+            )}
           </form>
         )}
       </div>
