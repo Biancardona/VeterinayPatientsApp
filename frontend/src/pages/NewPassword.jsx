@@ -7,12 +7,13 @@ import { NavLink } from "react-router-dom";
 const NewPassword = () => {
   //Hook useParams to read the parameters from the URLS
   const params = useParams();
+  //Destructuring token from params(token is te way its called in the routes)
+  const { token } = params;
   const [password, setPassword] = useState("");
   const [confirmedToken, setconfirmedToken] = useState(false);
   const [alerta, setAlerta] = useState({});
   const [confirmPassword, setconfirmPassword] = useState(false);
-  //Destructuring token from params(token is te way its called in the routes)
-  const { token } = params;
+
   //Hook useEffect to be executed once the componente is loaded
   const handleSubmit = async (e) => {
     e.preventDefault();
