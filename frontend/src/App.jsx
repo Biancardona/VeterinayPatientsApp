@@ -5,6 +5,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import NewPassword from "./pages/NewPassword";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import { AuthProvider } from "./context/AuthProvider";
 
 //Browser router es el wraper
 //Router agrupa diferentes rutas
@@ -13,15 +14,17 @@ import Register from "./pages/Register";
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<AuthLayout />}>
-          <Route index element={<Login />} />
-          <Route path="register" element={<Register />} />
-          <Route path="forgot-password/" element={<ForgotPassword />} />
-          <Route path="forgot-password/:token" element={<NewPassword />} />
-          <Route path="confirmed/:id" element={<AccountConfirm />} />
-        </Route>
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<AuthLayout />}>
+            <Route index element={<Login />} />
+            <Route path="register" element={<Register />} />
+            <Route path="forgot-password/" element={<ForgotPassword />} />
+            <Route path="forgot-password/:token" element={<NewPassword />} />
+            <Route path="confirmed/:id" element={<AccountConfirm />} />
+          </Route>
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
 }

@@ -1,6 +1,12 @@
 import { NavLink } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 const Login = () => {
+  //Global state that is going to be sincronized in all the components
+  //Calling the useAuth function. Aplying destructuring to access the values from the
+  //authContext
+  const { auth } = useAuth();
+  console.log(auth);
   return (
     <>
       <div>
