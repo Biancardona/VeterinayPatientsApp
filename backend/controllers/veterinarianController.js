@@ -89,7 +89,7 @@ const auth = async (req, res) => {
     return res.status(403).json({ msg: error.message });
   }
   //authentication of the password.Using the function that is in the schema to compare passwords
-  if (emailExist.comparedPasswords(password)) {
+  if (await emailExist.comparedPasswords(password)) {
     //authentication of the user(using the function generateJWT); passing the user id in order to generate
     //the token with the user id
     res.json({ token: generateJWT(emailExist.id) });
