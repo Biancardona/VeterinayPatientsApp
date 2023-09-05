@@ -1,10 +1,20 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, Navigate } from "react-router-dom";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import useAuth from "../hooks/useAuth";
 
 const ProtectedLayout = () => {
+  //To use the context information, applying destructuring and call the useAuth function
+  const { auth, load } = useAuth();
+  console.log(auth);
+  console.log(load);
+  if (load) return "Cargando...";
+
   return (
     <>
-      <div>ProtectedLayout</div>
-      <Outlet />
+      <Header />
+      {auth?._id ? <Outlet /> : <Navigate to="/" />}
+      <Footer />
     </>
   );
 };

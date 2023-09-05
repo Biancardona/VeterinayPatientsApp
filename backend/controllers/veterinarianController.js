@@ -43,7 +43,7 @@ const register = async (req, res) => {
 const perfil = (req, res) => {
   //req.veterinario esta almacenado en el authMiddleware(info almacenada en la sesion del servidor)
   const { veterinarian } = req;
-  res.json({ perfil: veterinarian });
+  res.json(veterinarian);
 };
 
 //When user creates their account, an email with the token number would be send to the user so they can confirm their account

@@ -25,7 +25,7 @@ function App() {
             <Route path="forgot-password/:token" element={<NewPassword />} />
             <Route path="confirmed/:id" element={<AccountConfirm />} />
           </Route>
-          <Route path="/admin" element={ProtectedLayout}>
+          <Route path="/admin" element={<ProtectedLayout />}>
             <Route index element={<Admin />} />
           </Route>
         </Routes>

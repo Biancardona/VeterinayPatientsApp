@@ -13,8 +13,6 @@ const Login = () => {
   //Global state that is going to be sincronized in all the components
   //Calling the useAuth function. Aplying destructuring to access the values from the
   //authContext
-  const { auth } = useAuth();
-  console.log(auth);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,9 +29,10 @@ const Login = () => {
       });
       //save token in localStorage (key and value)
       localStorage.setItem("token", data.token);
+      navigate("/admin");
+
       console.log(data);
       setAlerta({ msg: data.msg });
-      navigate("/admin");
     } catch (error) {
       setAlerta({
         msg: error.response.data.msg,

@@ -14,13 +14,19 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   //If the object has information, means the user is autenticated
   const [auth, setAuth] = useState({});
+  //Add another state, que estara disponible para arreglar el estado del objeto al iniciar sesion(porque siempre lo marca false)
+  const [load, setLoad] = useState(true);
   //Once the app is loaded, useEffect going to corroborate if the user is autenticated
   useEffect(() => {
     const userAuthenticate = async () => {
-      //Save token in localStorage(key and value)
-      const token = localStorage.setItem("token");
+      //Bring token from localStorage(key and value)
+      const token = localStorage.getItem("token");
+      console.log(token);
       //if token doesn't exist, stop running
-      if (!token) return;
+      if (!token) {
+        setLoad(false);
+        return;
+      }
       //Adding configuration header
       const config = {
         headers: {
@@ -35,11 +41,12 @@ const AuthProvider = ({ children }) => {
         console.log(error.response.data.msg);
         setAuth({});
       }
+      setLoad(false);
     };
     userAuthenticate();
   }, []);
   return (
-    <AuthContext.Provider value={{ auth, setAuth }}>
+    <AuthContext.Provider value={{ auth, setAuth, load }}>
       {children}
     </AuthContext.Provider>
   );
