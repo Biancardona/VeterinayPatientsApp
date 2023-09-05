@@ -3,12 +3,12 @@ import { Link } from "react-router-dom";
 const Header = () => {
   return (
     <header className="py-10 bg-indigo-600">
-      <div className="container mx-auto flex justify-between items-center">
-        <h1 className="font-bold text-2xl text-indigo-200">
+      <div className="container mx-auto flex flex-col lg:flex-row justify-between items-center">
+        <h1 className="font-bold text-2xl text-indigo-200 text-center">
           Administrator Veterinarians{" "}
           <spam className="text-white"> Patients </spam>
         </h1>
-        <nav className="flex gap-4">
+        <nav className="flex flex-col items-center lg:flex-row mt-5 lg:mt-0 gap-4">
           <Link className="text-white uppercase" to="/admin">
             {" "}
             Pacientes{" "}
