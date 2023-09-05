@@ -21,7 +21,7 @@ const AuthProvider = ({ children }) => {
     const userAuthenticate = async () => {
       //Bring token from localStorage(key and value)
       const token = localStorage.getItem("token");
-      console.log(token);
+
       //if token doesn't exist, stop running
       if (!token) {
         setLoad(false);
@@ -45,8 +45,16 @@ const AuthProvider = ({ children }) => {
     };
     userAuthenticate();
   }, []);
+
+  const signOut = () => {
+    //Delete the token
+    localStorage.removeItem("token");
+    //Object information empty
+    setAuth({});
+  };
+
   return (
-    <AuthContext.Provider value={{ auth, setAuth, load }}>
+    <AuthContext.Provider value={{ auth, setAuth, load, signOut }}>
       {children}
     </AuthContext.Provider>
   );

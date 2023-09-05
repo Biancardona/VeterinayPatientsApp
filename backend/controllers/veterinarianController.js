@@ -92,7 +92,14 @@ const auth = async (req, res) => {
   if (await emailExist.comparedPasswords(password)) {
     //authentication of the user(using the function generateJWT); passing the user id in order to generate
     //the token with the user id
-    res.json({ token: generateJWT(emailExist.id) });
+    //We need to pass no only the id, but the token too and all the user data
+
+    res.json({
+      _id: emailExist._id,
+      name: emailExist.name,
+      email: emailExist.email,
+      token: generateJWT(emailExist.id),
+    });
   } else {
     const error = new Error("password no coincide ");
     return res.status(403).json({ msg: error.message });
