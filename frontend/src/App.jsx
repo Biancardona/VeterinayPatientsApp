@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Admin from "./pages/AdminPatients";
 import { AuthProvider } from "./context/AuthProvider";
+import { PatientsProvider } from "./context/PatientsProvider";
 
 //Browser router es el wraper
 //Router agrupa diferentes rutas
@@ -17,18 +18,20 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <Routes>
-          <Route path="/" element={<AuthLayout />}>
-            <Route index element={<Login />} />
-            <Route path="register" element={<Register />} />
-            <Route path="forgot-password/" element={<ForgotPassword />} />
-            <Route path="forgot-password/:token" element={<NewPassword />} />
-            <Route path="confirmed/:id" element={<AccountConfirm />} />
-          </Route>
-          <Route path="/admin" element={<ProtectedLayout />}>
-            <Route index element={<Admin />} />
-          </Route>
-        </Routes>
+        <PatientsProvider>
+          <Routes>
+            <Route path="/" element={<AuthLayout />}>
+              <Route index element={<Login />} />
+              <Route path="register" element={<Register />} />
+              <Route path="forgot-password/" element={<ForgotPassword />} />
+              <Route path="forgot-password/:token" element={<NewPassword />} />
+              <Route path="confirmed/:id" element={<AccountConfirm />} />
+            </Route>
+            <Route path="/admin" element={<ProtectedLayout />}>
+              <Route index element={<Admin />} />
+            </Route>
+          </Routes>
+        </PatientsProvider>
       </AuthProvider>
     </BrowserRouter>
   );

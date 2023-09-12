@@ -1,38 +1,30 @@
 import { useState } from "react";
 import Alert from "./Alert";
-import axiosClient from "../config/axios";
+import usePatient from "../hooks/usePatient";
 
 const Form = () => {
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [propietario, setPropietario] = useState("");
+  const [email, setEmail] = useState("");
   const [date, setDate] = useState("");
   const [sintomas, setSintomas] = useState("");
   const [alert, setAlerta] = useState({});
-
-  const handleSubmit = async (e) => {
+  //add the parentesis in usePatient bc is a function
+  const { savePatient } = usePatient();
+  const handleSubmit = (e) => {
     e.preventDefault();
     if ([name, email, propietario, date, sintomas].includes("")) {
-      setAlerta({ msg: "Campo vacio, intenta de nuevo" });
+      setAlerta({ msg: "Campo vacio, intenta de nuevo", error: true });
       return;
     }
     setAlerta({});
-
-    try {
-      //   await axiosClient.post("/patients", {
-      //     name,
-      //     email,
-      //     propietario,
-      //     date,
-      //     sintomas,
-      //   });
-      setAlerta({
-        msg: "Paciente creado correctamente",
-        error: false,
-      });
-    } catch (error) {
-      setAlerta({ msg: error.response.data.msg, error: true });
-    }
+    //savePatient function is going to create a new object with the information
+    savePatient({ name, email, propietario, date, sintomas });
+    setName("");
+    setPropietario("");
+    setEmail("");
+    setDate("");
+    setSintomas("");
   };
   const { msg } = alert;
 
