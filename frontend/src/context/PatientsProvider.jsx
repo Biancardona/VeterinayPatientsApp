@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import axiosClient from "../config/axios";
 
 const PatientsContext = createContext();
@@ -6,10 +6,32 @@ const PatientsContext = createContext();
 const PatientsProvider = ({ children }) => {
   const [patients, setPatients] = useState([]);
 
+  useEffect(() => {
+    const getPatients = async () => {
+      try {
+        //Obtaining token because the vet's ID is saved there
+        const token = localStorage.getItem("token");
+
+        const configuration = {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        const { data } = await axiosClient("/patients", configuration);
+        console.log(data);
+        //Once we have the result its going to be in patient state
+        setPatients(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getPatients();
+  }, []);
+
   const savePatient = async (patient) => {
     //Bring token from localStorage(key and value)
     const token = localStorage.getItem("token");
-    console.log(patient);
     //Adding configuration header
     const config = {
       headers: {
