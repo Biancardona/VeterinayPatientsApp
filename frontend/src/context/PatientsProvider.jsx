@@ -1,10 +1,13 @@
 import { createContext, useState, useEffect } from "react";
 import axiosClient from "../config/axios";
+import useAuth from "../hooks/useAuth";
 
 const PatientsContext = createContext();
 
 const PatientsProvider = ({ children }) => {
   const [patients, setPatients] = useState([]);
+  //Pasar el usuario como dependencia en el useEffecto para que solo muestre los pacientes del vet correspondiente
+  const { auth } = useAuth;
 
   useEffect(() => {
     const getPatients = async () => {
@@ -27,20 +30,21 @@ const PatientsProvider = ({ children }) => {
       }
     };
     getPatients();
-  }, []);
+  }, [auth]);
 
   const savePatient = async (patient) => {
     //Bring token from localStorage(key and value)
-    const token = localStorage.getItem("token");
-    //Adding configuration header
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    //Create context in order to have a global state for patients
     try {
+      const token = localStorage.getItem("token");
+      //Adding configuration header
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      //Create context in order to have a global state for patients
+
       const { data } = await axiosClient.post("/patients", patient, config);
       //Se crea un nuevo objeto en ...savePatient omitiendo los tres primeros valores,
       const { createdAt, updatedAt, __v, ...savedPatient } = data;

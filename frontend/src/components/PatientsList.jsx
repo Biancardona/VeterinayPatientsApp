@@ -1,8 +1,8 @@
 import usePatient from "../hooks/usePatient";
+import Patient from "./Patient";
 
 const PatientsList = () => {
   const { patients } = usePatient();
-  console.log(patients);
 
   return (
     <>
@@ -16,6 +16,9 @@ const PatientsList = () => {
             Administra tus{" "}
             <spam className="text-indigo-600">Pacientes y Citas </spam>{" "}
           </p>
+          {patients.map((option) => (
+            <Patient key={option._id} patientProp={option} />
+          ))}
         </>
       ) : (
         <>

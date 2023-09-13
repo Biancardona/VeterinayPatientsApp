@@ -30,7 +30,10 @@ const Form = () => {
 
   return (
     <>
-      <p className="font-black text-center mb-10">
+      <h2 className="text-3xl font-bold text-center">
+        Administrador de pacientes
+      </h2>{" "}
+      <p className=" text-center mb-10 mt-5 text-xl">
         Administra tu Veterinaria y añade{" "}
         <spam className="text-indigo-600"> Pacientes </spam>
       </p>
