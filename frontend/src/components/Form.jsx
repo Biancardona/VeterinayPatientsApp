@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Alert from "./Alert";
 import usePatient from "../hooks/usePatient";
 
@@ -8,9 +8,27 @@ const Form = () => {
   const [email, setEmail] = useState("");
   const [date, setDate] = useState("");
   const [sintomas, setSintomas] = useState("");
+  const [id, setId] = useState(null);
+
   const [alert, setAlerta] = useState({});
   //add the parentesis in usePatient bc is a function
-  const { savePatient } = usePatient();
+  const { savePatient, patient } = usePatient();
+
+  //Using useEffect we can check out when the patient object has change, and if has change
+  //that means the edit button was pressed.
+  //Passing patient as a dependendy, every time patient change,  always runs on the first render
+  //but also any time the dependency value changes
+  useEffect(() => {
+    if (patient?.name) {
+      setName(patient.name);
+      setPropietario(patient.propietario),
+        setEmail(patient.email),
+        setSintomas(patient.sintomas);
+      setDate(new Date(patient.date).toLocaleDateString("en-CA"));
+      setId(patient._id);
+    }
+  }, [patient]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if ([name, email, propietario, date, sintomas].includes("")) {
@@ -19,7 +37,11 @@ const Form = () => {
     }
     setAlerta({});
     //savePatient function is going to create a new object with the information
-    savePatient({ name, email, propietario, date, sintomas });
+    savePatient({ name, email, propietario, date, sintomas, id });
+    setAlerta({
+      msg: "Correctly saved",
+      error: false,
+    });
     setName("");
     setPropietario("");
     setEmail("");
@@ -114,7 +136,7 @@ const Form = () => {
 
           <input
             type="submit"
-            value="Añadir Paciente"
+            value={id ? "Editar Paciente" : "Añadir Paciente"}
             className="border w-full p-3 mt-5 my-5 px-10 bg-indigo-600 text-white uppercase rounded-xl font-bold hover:cursor-pointer hover:bg-indigo-900"
           />
         </div>

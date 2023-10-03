@@ -1,6 +1,9 @@
-const Patient = ({ patientProp }) => {
-  //applying destructuring to extract all the info from patientProp object
+import usePatient from "../hooks/usePatient";
 
+const Patient = ({ patientProp }) => {
+  const { getToEdit } = usePatient();
+
+  //applying destructuring to extract all the info from patientProp object
   const { name, propietario, email, date, sintomas } = patientProp;
   console.log(patientProp);
 
@@ -10,6 +13,7 @@ const Patient = ({ patientProp }) => {
       newDate
     );
   };
+
   return (
     <div className="mx-5 my-5 bg-white shadow-md py-5 px-5 rounded-xl ">
       <p className="uppercase font-bold text-indigo-900 my-1">
@@ -42,8 +46,9 @@ const Patient = ({ patientProp }) => {
         {" "}
         <button
           className="flex select-none items-center gap-3 rounded-lg border border-indigo-500 py-1 px-3 text-center align-middle font-sans text-xs font-bold uppercase text-indigo-500 transition-all hover:opacity-75 focus:ring focus:ring-indigo-200 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-          type="button"
+          type="submit"
           data-ripple-dark="true"
+          onClick={() => getToEdit(patientProp)}
         >
           Edit
           <svg
