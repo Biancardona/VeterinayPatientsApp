@@ -50,8 +50,11 @@ const PatientsProvider = ({ children }) => {
           patient,
           config
         );
-        //iterando sobre el state, busca que coincida el id que se modifica
-        //y el id de la respuesta(data) y reescribe todo el objeto
+        //Almacenando en updatedPAtient un nuevo array de la iteracion del array patients,
+        //For each element in patientState in the patients Array checks if the _id property of patientState is equal
+        //to the _id of data
+        //This comparison is likely used to identify a specific patient within the array.
+        //If the id's matches, means that you want to update this specific patient's data
         const updatedPatient = patients.map((patientState) =>
           patientState._id === data._id ? data : patientState
         );
@@ -63,6 +66,7 @@ const PatientsProvider = ({ children }) => {
       console.log("editando");
     } else {
       try {
+        delete patient.id;
         //Create context in order to have a global state for patients
         const { data } = await axiosClient.post("/patients", patient, config);
         //Se crea un nuevo objeto en ...savePatient omitiendo los tres primeros valores,
@@ -76,19 +80,43 @@ const PatientsProvider = ({ children }) => {
         console.log(error.response.data.msg);
       }
     }
-
-    // else, is a new patient
-
-    //Bring token from localStorage(key and value)
   };
   //Ya se iteraron los datos, con el nuevo state del paciente en singular se trae el objeto
   const getToEdit = (patient) => {
     setPatient(patient);
   };
 
+  const deletePatient = async (id) => {
+    const deleteMessage = confirm("Desea eliminar Paciente?");
+    if (deleteMessage) {
+      try {
+        const token = localStorage.getItem("token");
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        const { data } = await axiosClient.delete(`/patients/${id}`, config);
+        const updatedPatient = patients.filter((elem) => elem._id !== id);
+        setPatients(updatedPatient);
+        console.log(data);
+      } catch (error) {
+        console.log(error.respo.data);
+      }
+    }
+  };
+
   return (
     <PatientsContext.Provider
-      value={{ patients, setPatients, savePatient, getToEdit, patient }}
+      value={{
+        patients,
+        setPatients,
+        savePatient,
+        getToEdit,
+        patient,
+        deletePatient,
+      }}
     >
       {children}
     </PatientsContext.Provider>

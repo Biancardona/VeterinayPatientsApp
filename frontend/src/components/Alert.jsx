@@ -1,4 +1,20 @@
+import { useEffect, useState } from "react";
+
 const Alert = ({ alert }) => {
+  const [show, setShow] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShow(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+  // If show is false the component will return null and stop here
+  if (!show) {
+    return null;
+  }
+
   return (
     <div
       className={`${

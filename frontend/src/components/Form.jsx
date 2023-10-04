@@ -13,6 +13,7 @@ const Form = () => {
   const [alert, setAlerta] = useState({});
   //add the parentesis in usePatient bc is a function
   const { savePatient, patient } = usePatient();
+  const { msg } = alert;
 
   //Using useEffect we can check out when the patient object has change, and if has change
   //that means the edit button was pressed.
@@ -42,13 +43,14 @@ const Form = () => {
       msg: "Correctly saved",
       error: false,
     });
+
     setName("");
     setPropietario("");
     setEmail("");
     setDate("");
     setSintomas("");
+    setId("");
   };
-  const { msg } = alert;
 
   return (
     <>
@@ -136,8 +138,8 @@ const Form = () => {
 
           <input
             type="submit"
-            value={id ? "Editar Paciente" : "Añadir Paciente"}
             className="border w-full p-3 mt-5 my-5 px-10 bg-indigo-600 text-white uppercase rounded-xl font-bold hover:cursor-pointer hover:bg-indigo-900"
+            value={id ? "Editar Paciente" : "Guardar Paciente"}
           />
         </div>
       </form>

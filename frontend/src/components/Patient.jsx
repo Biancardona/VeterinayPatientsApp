@@ -1,10 +1,10 @@
 import usePatient from "../hooks/usePatient";
 
 const Patient = ({ patientProp }) => {
-  const { getToEdit } = usePatient();
+  const { getToEdit, deletePatient } = usePatient();
 
   //applying destructuring to extract all the info from patientProp object
-  const { name, propietario, email, date, sintomas } = patientProp;
+  const { name, propietario, email, date, sintomas, _id } = patientProp;
   console.log(patientProp);
 
   const formatDate = (date) => {
@@ -70,6 +70,7 @@ const Patient = ({ patientProp }) => {
           className="flex select-none items-center gap-3 rounded-lg border border-pink-500 py-2 px-3 text-center align-middle font-sans text-xs font-bold uppercase text-pink-500 transition-all hover:opacity-75 focus:ring focus:ring-pink-200 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
           type="button"
           data-ripple-dark="true"
+          onClick={() => deletePatient(_id)}
         >
           Delete
           <svg
