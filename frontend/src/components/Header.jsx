@@ -15,7 +15,7 @@ const Header = () => {
             {" "}
             Pacientes{" "}
           </Link>
-          <Link className="text-white uppercase" to="/perfil">
+          <Link className="text-white uppercase" to="/admin/profile">
             {" "}
             Perfil{" "}
           </Link>

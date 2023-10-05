@@ -7,8 +7,10 @@ import NewPassword from "./pages/NewPassword";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Admin from "./pages/AdminPatients";
+import ProfileChangePassword from "./pages/ProfileChangePassword";
 import { AuthProvider } from "./context/AuthProvider";
 import { PatientsProvider } from "./context/PatientsProvider";
+import EditProfile from "./pages/EditProfile";
 
 //Browser router es el wraper
 //Router agrupa diferentes rutas
@@ -29,6 +31,11 @@ function App() {
             </Route>
             <Route path="/admin" element={<ProtectedLayout />}>
               <Route index element={<Admin />} />
+              <Route path="profile" element={<EditProfile />} />
+              <Route
+                path="change-password"
+                element={<ProfileChangePassword />}
+              />
             </Route>
           </Routes>
         </PatientsProvider>
