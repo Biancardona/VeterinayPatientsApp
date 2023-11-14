@@ -15,7 +15,7 @@ const Form = () => {
   const { savePatient, patient } = usePatient();
   const { msg } = alert;
 
-  //Using useEffect we can check out when the patient object has change, and if has change
+  //Using useEffect we can check out when the patient object has change, and if has change =>
   //that means the edit button was pressed.
   //Passing patient as a dependendy, every time patient change,  always runs on the first render
   //but also any time the dependency value changes

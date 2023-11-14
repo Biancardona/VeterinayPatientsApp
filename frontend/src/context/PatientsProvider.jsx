@@ -102,7 +102,7 @@ const PatientsProvider = ({ children }) => {
         setPatients(updatedPatient);
         console.log(data);
       } catch (error) {
-        console.log(error.respo.data);
+        console.log(error.response.data);
       }
     }
   };

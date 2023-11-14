@@ -53,8 +53,36 @@ const AuthProvider = ({ children }) => {
     setAuth({});
   };
 
+  const editProfile = async (datos) => {
+    const token = localStorage.getItem("token");
+
+    //if token doesn't exist, stop running
+    if (!token) {
+      setLoad(false);
+      return;
+    }
+    //Adding configuration header
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const editMessage = confirm("Dese guardar los cambios efectuados?");
+    if (editMessage) {
+      try {
+        const { data } = await axiosClient.put(
+          `/veterinarians/perfil/${datos._id}, ${datos}, config`
+        );
+        console.log(data);
+      } catch (error) {
+        console.log(error.response.data);
+      }
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ auth, setAuth, load, signOut }}>
+    <AuthContext.Provider value={{ auth, setAuth, load, signOut, editProfile }}>
       {children}
     </AuthContext.Provider>
   );

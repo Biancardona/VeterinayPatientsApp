@@ -1,21 +1,40 @@
 import { useState, useEffect } from "react";
 import AdminNav from "../components/AdminNav";
 import useAuth from "../hooks/useAuth";
+import Alert from "../components/Alert";
 
 const EditProfile = () => {
   //No cambiar el state original hasta que no se hayan almacenado los cambios(usar useEffect)
-  //Crear un state local
-  //para que tome una copia del objeto
-  //Toma una copia de lo que hay en el state (profile), va a reescribir en el campo del objeto que este asociado
-  //con el input(con el spread operator)
-  //Se asocia con el valor nombre del input
-  const { auth } = useAuth();
+  // setting the value of the input field to the property of the profile object, ejem => value={profile.email} .
+  //{...profile} is creating a shallow copy of the existing "profile" object to ensure that the original "profile" object remains unaltered,
+  //and you're working with a new object
+  //[e.target.name] is using the name property of the e.target element to access the name property of the input field.
+  //e.target.value retrieves the new value entered by the user in the input field
+
+  const { auth, editProfile } = useAuth();
   const [profile, setProfile] = useState({});
+  const [alert, setAlerta] = useState({});
+  const { msg } = alert;
 
   useEffect(() => {
     setProfile(auth);
   }, [auth]);
-  console.log(auth);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    //Destructuring to extract name and email and be able to use them as an array
+    const { name, email } = profile;
+    if ([name, email].includes("")) {
+      setAlerta({ msg: "Campo vacio, intenta de nuevo", error: true });
+      return;
+    }
+    editProfile({ name, email });
+
+    setAlerta({
+      msg: "Correctly saved",
+      error: false,
+    });
+  };
 
   return (
     <>
@@ -26,7 +45,8 @@ const EditProfile = () => {
       </p>
       <div className="flex justify-center ">
         <div className="w-full bg-white shadow p-5">
-          <form>
+          {msg && <Alert alert={alert} />}
+          <form onSubmit={handleSubmit}>
             <div className="my-3">
               <label className="text-gray-600 uppercase font-bold">
                 {" "}
@@ -50,7 +70,11 @@ const EditProfile = () => {
               <input
                 type="text"
                 className="border bg-gray-50 w-full pt-2 mt-5 rounded-lg"
-                name="Web"
+                name="web"
+                value={profile.web || ""}
+                onChange={(e) =>
+                  setProfile({ ...profile, [e.target.name]: e.target.value })
+                }
               ></input>
             </div>
             <div className="my-3">
@@ -64,7 +88,7 @@ const EditProfile = () => {
                 name="email"
                 value={profile.email || ""}
                 onChange={(e) =>
-                  setProfile({ ...profile, [e.target.email]: e.target.value })
+                  setProfile({ ...profile, [e.target.name]: e.target.value })
                 }
               ></input>
             </div>
@@ -76,7 +100,11 @@ const EditProfile = () => {
               <input
                 type="text"
                 className="border bg-gray-50 w-full pt-2 mt-5 rounded-lg"
-                name="telefono"
+                name="telephone"
+                value={profile.telephone || ""}
+                onChange={(e) =>
+                  setProfile({ ...profile, [e.target.name]: e.target.value })
+                }
               ></input>
             </div>
 

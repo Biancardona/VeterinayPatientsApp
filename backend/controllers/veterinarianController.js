@@ -7,7 +7,7 @@ import emailForgotPassword from "../helpers/forgotPassword.js";
 //Register a user
 const register = async (req, res) => {
   //Applying destructuring to email and password
-  //Para leer del inputo la info del formulario req.body
+  //Para leer del input o la info del formulario req.body
   const { name, email } = req.body;
   const userEmailExist = await Veterinarian.findOne({ email: email });
 
@@ -176,6 +176,11 @@ const newPassword = async (req, res) => {
     console.log(error);
   }
 };
+const updateProfile = async (req, res) => {
+  //Params is the register it´s going to be edited, and Body is the information its going to be edited
+  console.log(req.params.id);
+  console.log(req.body);
+};
 
 export {
   register,
@@ -185,4 +190,5 @@ export {
   forgotPassword,
   authToken,
   newPassword,
+  updateProfile,
 };
