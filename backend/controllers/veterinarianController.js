@@ -178,8 +178,39 @@ const newPassword = async (req, res) => {
 };
 const updateProfile = async (req, res) => {
   //Params is the register it´s going to be edited, and Body is the information its going to be edited
-  console.log(req.params.id);
-  console.log(req.body);
+  const { id } = req.params;
+
+  const veterinarianById = await Veterinarian.findById(id);
+  if (!veterinarianById) {
+    const error = new Error("Hubo un error");
+    return res.status(404).json({ msg: error.message });
+  }
+
+  //Hacer una comprobacion donde, si el email es diferente al que tenia:
+  const { email } = req.body;
+  if (veterinarianById.email !== req.body.email) {
+    // compruebe si se esta agregando un email que ya este en uso, mande un mensaje de error
+    const emailExist = await Veterinarian.findOne({ email: email });
+    if (emailExist) {
+      const error = new Error("Ese Email ya esta en uso");
+      return res.status(404).json({ msg: error.message });
+    }
+  }
+  //Update profile
+  //Need to read the information in the json and update the information
+  //req.body is an object instance
+  try {
+    veterinarianById.name = req.body.name;
+    veterinarianById.email = req.body.email;
+    veterinarianById.web = req.body.web;
+    veterinarianById.telephone = req.body.telephone;
+    //Variable that saves the response in the API
+    const veterinarianObject = await veterinarianById.save();
+    //Response
+    res.json(veterinarianObject);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export {

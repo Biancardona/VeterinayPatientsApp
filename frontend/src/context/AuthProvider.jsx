@@ -71,12 +71,17 @@ const AuthProvider = ({ children }) => {
     const editMessage = confirm("Dese guardar los cambios efectuados?");
     if (editMessage) {
       try {
-        const { data } = await axiosClient.put(
-          `/veterinarians/perfil/${datos._id}, ${datos}, config`
+        await axiosClient.put(
+          `/veterinarians/perfil/${datos._id}`,
+          datos,
+          config
         );
-        console.log(data);
+        return { msg: "Correctamente actualizado", error: false };
       } catch (error) {
-        console.log(error.response.data);
+        return {
+          msg: error.response.data.msg,
+          error: true,
+        };
       }
     }
   };

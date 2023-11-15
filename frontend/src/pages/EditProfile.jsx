@@ -20,7 +20,7 @@ const EditProfile = () => {
     setProfile(auth);
   }, [auth]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     //Destructuring to extract name and email and be able to use them as an array
     const { name, email } = profile;
@@ -28,12 +28,10 @@ const EditProfile = () => {
       setAlerta({ msg: "Campo vacio, intenta de nuevo", error: true });
       return;
     }
-    editProfile({ name, email });
-
-    setAlerta({
-      msg: "Correctly saved",
-      error: false,
-    });
+    //Blocking the code excecution of the alert untl this editProfile state finish their status , their responses
+    const resultEditProfile = await editProfile(profile);
+    //The response of setAlert comes from the authProvider response
+    setAlerta(resultEditProfile);
   };
 
   return (
