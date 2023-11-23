@@ -8,6 +8,7 @@ import {
   authToken,
   newPassword,
   updateProfile,
+  changePassword,
 } from "../controllers/veterinarianController.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 
@@ -33,5 +34,6 @@ router.post("/forgotPassword/:token", newPassword);
 // and then next goes to perfil
 router.get("/perfil", authMiddleware, perfil);
 router.put("/perfil/:id", authMiddleware, updateProfile);
+router.put("/update-password", authMiddleware, changePassword);
 
 export default router;

@@ -185,7 +185,6 @@ const updateProfile = async (req, res) => {
     const error = new Error("Hubo un error");
     return res.status(404).json({ msg: error.message });
   }
-
   //Hacer una comprobacion donde, si el email es diferente al que tenia:
   const { email } = req.body;
   if (veterinarianById.email !== req.body.email) {
@@ -212,7 +211,29 @@ const updateProfile = async (req, res) => {
     console.log(error);
   }
 };
+const changePassword = async (req, res) => {
+  //Read data
+  const { id } = req.veterinarian;
+  const { currentPassword, newPassword } = req.body;
+  //Confirm vet exist
+  const vetExist = await Veterinarian.findById(id);
+  if (!vetExist) {
+    const error = new Error("Hubo un error");
+    return res.status(404).json({ msg: error.message });
+  }
+  //Verify vet password
+  if (await vetExist.comparedPasswords(currentPassword)) {
+    //Save new password
+    vetExist.password = newPassword;
+    await vetExist.save();
+    res.json({ msg: "Contraseña añadida correctamente" });
+  } else {
+    const error = new Error("La contraseña actual es incorrecta");
+    return res.status(404).json({ msg: error.message });
+  }
 
+  console.log(req.body);
+};
 export {
   register,
   perfil,
@@ -222,4 +243,5 @@ export {
   authToken,
   newPassword,
   updateProfile,
+  changePassword,
 };

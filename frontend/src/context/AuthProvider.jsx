@@ -86,8 +86,37 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  const editPassword = async (datos) => {
+    console.log(datos);
+    const token = localStorage.getItem("token");
+
+    //if token doesn't exist, stop running
+    if (!token) {
+      setLoad(false);
+      return;
+    }
+    //Adding configuration header
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      await axiosClient.put("/veterinarians/update-password/", datos, config);
+      return { msg: "Correctamente actualizado", error: false };
+    } catch (error) {
+      return {
+        msg: error.response.data.msg,
+        error: true,
+      };
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ auth, setAuth, load, signOut, editProfile }}>
+    <AuthContext.Provider
+      value={{ auth, setAuth, load, signOut, editProfile, editPassword }}
+    >
       {children}
     </AuthContext.Provider>
   );
